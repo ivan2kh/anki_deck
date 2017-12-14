@@ -62,6 +62,7 @@ def _set_transcription(card):
     """
     for i, x in enumerate(card.info):
         first = x.find('[')
+        if x.find(']') == -1: break
         if first != -1:
             last = x.index(']')
             card.transcription = x[first:last + 1]
@@ -80,8 +81,8 @@ def _xml_cleanup(card):
     """
     text = '<ar>' + ' '.join(card.info)
     soup = BeautifulSoup(text.replace('&apos;', "'"), 'html.parser')
-    for tag in soup.find_all('ex'):
-        tag.decompose()
+    # for tag in soup.find_all('ex'):
+    #     tag.decompose()
 
     # Remove empty tags. There may be some because we removed <ex> nodes.
     for tag in soup.find_all('blockquote'):
@@ -186,7 +187,7 @@ def get_cards(words_file, dict_file, sound_path, card_handler):
             if need_audio:
                 path = op.join(sound_path, card.sound)
                 if not op.exists(path):
-                    card.sound = None
+                    card.sound = ""
                     logger.warning("Missing sound %s" % path)
             card_handler.handle(card)
         card_handler.finish()

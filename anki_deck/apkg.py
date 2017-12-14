@@ -21,7 +21,7 @@ import string
 import random
 import time
 from hashlib import sha1
-from .parser import CardsHandler
+from parser import CardsHandler
 
 
 if sys.version_info[0] > 2:
@@ -245,7 +245,7 @@ def _guid():
 
 def card_to_flds(card):
     """Create fields string fro the given card."""
-    parts = [card.word, card.info, card.transcription,
+    parts = [card.word, card.info, "",
              '[sound:%s]' % card.sound if card.sound else '']
     return '\x1f'.join(parts)
 
@@ -359,13 +359,13 @@ class Deck(CardsHandler):
             pass
 
     def handle(self, card):
-        if card.sound:
+        #if card.sound:
             # Map sound file to a number and copy it to the temp dir.
             index = len(self.media)
             self.media[index] = card.sound
 
-            shutil.copy(op.join(self.sound_path, card.sound),
-                        op.join(self.outpath, str(index)))
+            # shutil.copy(op.join(self.sound_path, card.sound),
+            #             op.join(self.outpath, str(index)))
 
             # Put word with all required into to the DB record.
             vals = (

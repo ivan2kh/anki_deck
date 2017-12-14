@@ -8,7 +8,7 @@ import sys
 import os.path as op
 import logging
 import click
-from anki_deck.parser import get_cards
+from parser import get_cards
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 pass_ctx = click.make_pass_decorator(dict, ensure=True)
@@ -71,7 +71,7 @@ def deck(ctx, deck_name, out):
     if deck_name is None:
         deck_name = name
 
-    from anki_deck.apkg import Deck
+    from apkg import Deck
     handler = Deck(out, ctx['audio'], deck_name)
     get_cards(ctx['words'], ctx['dict'], ctx['audio'], handler)
 
